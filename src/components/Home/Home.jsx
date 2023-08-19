@@ -1,17 +1,16 @@
 import React, { useEffect } from "react";
 import MovieList from "../MovieList/MovieList";
 
-import { useDispatch } from "react-redux";
-import {
-  fetchAsyncMovies,
-  fetchAsyncShows,
-} from "../../features/movies/moveSlice"
+import { useMovieActions} from "../../hooks/useMoviesActions";
+
+ 
 const Home = () => {
-  const dispatch = useDispatch();
+  const {fetchMovies,fetchShows} = useMovieActions()
   useEffect(() => {
-    dispatch(fetchAsyncMovies());
-    dispatch(fetchAsyncShows());
-  }, [dispatch]);
+    fetchMovies();
+    fetchShows();
+
+  }, [fetchMovies, fetchShows]);
   return (
     <div>
       <div className="banner-img"></div>

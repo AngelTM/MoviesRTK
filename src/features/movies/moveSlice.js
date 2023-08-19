@@ -5,7 +5,7 @@ import { APIKey } from "../../common/apis/MovieApiKey";
 export const fetchAsyncMovies = createAsyncThunk(
   "movies/fetchAsyncMovies",
   async () => {
-    const movieText = "Harry";
+    const movieText = "Action";
     const response = await movieApi.get(
       `?apiKey=${APIKey}&s=${movieText}&type=movie`
     );
@@ -16,7 +16,7 @@ export const fetchAsyncMovies = createAsyncThunk(
 export const fetchAsyncShows = createAsyncThunk(
   "movies/fetchAsyncShows",
   async () => {
-    const seriesText = "Friends";
+    const seriesText = "Dragon";
     const response = await movieApi.get(
       `?apiKey=${APIKey}&s=${seriesText}&type=series`
     );
@@ -42,29 +42,33 @@ const movieSlice = createSlice({
   name: "movies",
   initialState,
   reducers: {
+    addMovies:(state,{payload})=>{
+      state.movies = payload;
+    },
     removeSelectedMovieOrShow: (state) => {
       state.selectMovieOrShow = {};
     },
-  },
-  extraReducers: {
-    [fetchAsyncMovies.pending]: () => {
-      console.log("Pending");
-    },
-    [fetchAsyncMovies.fulfilled]: (state, { payload }) => {
-      console.log("Fetched Successfully");
-      return { ...state, movies: payload };
-    },
-    [fetchAsyncMovies.rejected]: () => {
-      console.log("Rejected");
-    },
-    [fetchAsyncShows.fulfilled]: (state, { payload }) => {
-      console.log("Fetched Successfully");
-      return { ...state, shows: payload };
-    },
-    [fetchAsyncMovieOrShowDetail.fulfilled]: (state, { payload }) => {
-      console.log("Fetched Successfully");
-      return { ...state, selectMovieOrShow: payload };
-    },
+  },  
+  extraReducers: (builder) => {
+    builder
+      .addCase(fetchAsyncMovies.pending, () => {
+        console.log("Pending");
+      })
+      .addCase(fetchAsyncMovies.fulfilled,(state, { payload }) => {
+          console.log("Fetched Successfully");
+        return { ...state, movies: payload };
+      })
+      .addCase(fetchAsyncMovies.rejected,() => {
+        console.log("Rejected");
+      })
+      .addCase(fetchAsyncShows.fulfilled,(state, { payload }) => {
+        console.log("Fetched Successfully");
+        return { ...state, shows: payload }
+      })
+      .addCase(fetchAsyncMovieOrShowDetail.fulfilled,(state, { payload }) => {
+        console.log("Fetched Successfully");
+        return { ...state, selectMovieOrShow: payload };
+      });
   },
 });
 
