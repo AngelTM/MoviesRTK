@@ -7,8 +7,8 @@ import { useMovieActions} from "../../hooks/useMoviesActions";
 const Home = () => {
   const {fetchMovies,fetchShows} = useMovieActions()
   useEffect(() => {
-    fetchMovies();
-    fetchShows();
+    fetchMovies("action");
+    fetchShows("dragon");
 
   }, [fetchMovies, fetchShows]);
   return (
